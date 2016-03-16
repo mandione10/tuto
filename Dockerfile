@@ -28,10 +28,14 @@ ADD pom.xml /code/pom.xml
 ADD src /code/src
 ADD webapp /code/webapp
 
+# Dynamic Environment with ARG
+ARG goal_clean=clean
+ARG goal_lutece=lutece:exploded
+
 # Delete targer if exists
 # Compile et create target directory
-RUN ["mvn", "clean"]
-RUN ["mvn", "lutece:exploded"]
+RUN mvn $goal_clean
+RUN mvn $goal_lutece
 
 # Install tomcat
 RUN apt-get -y install tomcat7
