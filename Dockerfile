@@ -70,7 +70,8 @@ RUN apt-get install ant
 # Edit file db.properies 
 RUN sed -i 's/lutece/lutece_bp/' /code/target/lutece/WEB-INF/conf/db.properties
 RUN sed -i 's/motdepasse//' /code/target/lutece/WEB-INF/conf/db.properties
-RUN sed -i 's/fr.paris.lutece_bp.util.pool.service.LuteceConnectionService/fr.paris.lutece.util.pool.service.LuteceConnectionService/' /code/target/lutece/WEB-INF/conf/db.properties
+RUN sed -i 's/fr.paris.lutece_bp.util.pool.service.LuteceConnectionService/fr.paris.lutece.util.pool.service.LuteceConnectionService/' \
+/code/target/lutece/WEB-INF/conf/db.properties
 
 # Create database with ant
 RUN /bin/bash -c "/usr/bin/mysqld_safe &" && \
