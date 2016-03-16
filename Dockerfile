@@ -1,3 +1,4 @@
+# Image base
 FROM ubuntu:14.04 
 
 # Update Ubuntu
