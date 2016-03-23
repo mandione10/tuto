@@ -22,22 +22,6 @@ RUN apt-get install -y maven
 #To choose a workdir 
 WORKDIR /code
 
-# Prepare by downloading dependencies
-ADD pom.xml /code/pom.xml
-
-# Adding source
-ADD src /code/src
-ADD webapp /code/webapp
-
-# Dynamic Environment with ARG
-ARG goal_clean=clean
-ARG goal_lutece=lutece:exploded
-
-# Delete targer if exists
-# Compile et create target directory
-RUN mvn $goal_clean
-RUN mvn $goal_lutece
-
 # Install tomcat
 RUN apt-get -y install tomcat7
 
@@ -56,16 +40,33 @@ EXPOSE 8080
 
 #-------base de données mysql
 RUN apt-get -y install mysql-server mysql-client
-RUN /bin/bash -c "/usr/bin/mysqld_safe &" && \
-  sleep 5 && \
-  mysqladmin -u root -p status && \
-  service mysql status
   
 # Expose a port 3306 for host
 EXPOSE 3306
 
 # Install ant
 RUN apt-get install ant
+
+# Install supervisor
+RUN apt-get -y install supervisor
+
+# Copy file supervisor.conf 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Prepare by downloading dependencies
+ADD pom.xml /code/pom.xml
+
+# Adding source
+ADD src /code/src
+ADD webapp /code/webapp
+
+# Dynamic Environment with ARG
+ARG goal_lutece=lutece:exploded
+
+# Delete targer if exists
+# Compile et create target directory
+RUN mvn $goal_clean
+RUN mvn $goal_lutece
 
 # Edit file db.properies 
 RUN sed -i 's/lutece/lutece_bp/' /code/target/lutece/WEB-INF/conf/db.properties
@@ -80,12 +81,6 @@ RUN /bin/bash -c "/usr/bin/mysqld_safe &" && \
 
 # Copy directory Lutece to webapp Tomcat 
 RUN cp -r /code/target/lutece /var/lib/tomcat7/webapps/bp
-
-# Install supervisor
-RUN apt-get -y install supervisor
-
-# Copy file supervisor.conf 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Exec mysql service and Tomcat service
 CMD ["/usr/bin/supervisord"]
