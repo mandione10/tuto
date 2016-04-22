@@ -5,7 +5,7 @@ data:
      volumes:
       - ~/docker/data:/var/lib/mysql
 mysql:
-     build: docker_link
+     build: Docker_link
      container_name: mysql
      environment:
        MYSQL_ROOT_PASSWORD: laye
@@ -14,7 +14,7 @@ mysql:
        - data
 site:
     container_name: lutece_cont
-    build: docker_client
+    build: Docker_client
     command: /usr/bin/supervisord 
     ports:
      - "8080:8080"
