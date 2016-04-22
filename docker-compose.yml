@@ -3,7 +3,7 @@ data:
      container_name: data
      command: /bin/true
      volumes:
-      - ~/docker/data:/var/lib/mysql
+      - ~/Docker/data:/var/lib/mysql
 mysql:
      build: Docker_link
      container_name: mysql
