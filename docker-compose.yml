@@ -3,7 +3,7 @@ data:
      volumes:
       - ~/Docker/data:/var/lib/mysql
 mysql:
-     build: Docker_link
+     image: mysql
      environment:
        MYSQL_ROOT_PASSWORD: laye
        MYSQL_PORT_3306_TCP_ADDR: 172.17.0.2
